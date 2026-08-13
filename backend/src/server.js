@@ -11,12 +11,23 @@ if (!Number.isInteger(PORT) || PORT < 1 || PORT > 65535) {
 }
 
 const startServer = async () => {
+  // Connect to the database first
   await connectDB();
 
-  // Start the server
-  app.listen(PORT, () => {
+  // Start the server and retain the instance
+  const server = app.listen(PORT, () => {
     logger.info(`Server running on port ${PORT} in ${process.env.NODE_ENV} mode`);
+  });
+
+  // Listen for server-level errors (e.g., EADDRINUSE)
+  server.on("error", (error) => {
+    logger.error(`Server startup error: ${error.message}`);
+    process.exit(1);
   });
 };
 
-startServer();
+// Handle any unhandled promise rejections during startup
+startServer().catch((error) => {
+  logger.error(`Failed to initialize application: ${error.message}`);
+  process.exit(1);
+});
