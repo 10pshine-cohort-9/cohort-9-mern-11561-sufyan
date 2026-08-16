@@ -1,7 +1,5 @@
 const express = require("express");
-
 const requestLogger = require("./middlewares/requestLogger");
-
 const errorHandler = require("./middlewares/errorHandler");
 const authRoutes = require("./routes/authRoutes");
 const noteRoutes = require("./routes/noteRoutes");
@@ -9,7 +7,6 @@ const noteRoutes = require("./routes/noteRoutes");
 const app = express();
 
 app.use(express.json());
-
 app.use(express.urlencoded({ extended: true }));
 
 app.use(requestLogger);
