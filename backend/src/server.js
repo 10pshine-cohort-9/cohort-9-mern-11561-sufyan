@@ -17,10 +17,12 @@ const startServer = async () => {
   try {
     await connectDB();
 
+    // Start the server and retain the instance
     const server = app.listen(PORT, () => {
       logger.info(`Server running on port ${PORT} in ${process.env.NODE_ENV} mode`);
     });
 
+    // Listen for server-level errors
     server.on("error", (error) => {
       logger.error(`Server startup error: ${error.message}`);
       process.exit(1);
