@@ -16,7 +16,6 @@ const noteSchema = new mongoose.Schema(
     content: {
       type: String,
       required: [true, "Please provide note content"],
-      // Rich text will be stored as an HTML string, so no max length is enforced
     },
   },
   {
