@@ -4,7 +4,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
-import DOMPurify from 'dompurify'; // <-- Added DOMPurify
+import DOMPurify from 'dompurify';
 
 // Import Context Hooks
 import { useAuth } from '../context/AuthContext';
