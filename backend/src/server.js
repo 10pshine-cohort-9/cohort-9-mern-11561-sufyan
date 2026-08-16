@@ -5,8 +5,7 @@ const app = require("./app");
 const connectDB = require("./config/db");
 const logger = require("./utils/logger");
 
-const rawPort = process.env.PORT ?? "5000";
-const PORT = Number(rawPort);
+const PORT = parseInt(process.env.PORT, 10) || 5000;
 
 if (!Number.isInteger(PORT) || PORT < 1 || PORT > 65535) {
   throw new Error("PORT must be an integer between 1 and 65535");
@@ -32,7 +31,4 @@ const startServer = async () => {
   }
 };
 
-startServer().catch((error) => {
-  logger.error(`Failed to initialize application: ${error.message}`);
-  process.exit(1);
-});
+startServer();
