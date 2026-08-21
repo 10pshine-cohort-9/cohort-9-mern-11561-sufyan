@@ -84,11 +84,11 @@ function Dashboard() {
       
       if (isEditing) {
         const response = await axios.put(`/api/notes/${editNoteId}`, formData, config);
-        setNotes(notes.map((note) => (note._id === editNoteId ? response.data : note)));
+        setNotes((prevNotes) => prevNotes.map((note) => (note._id === editNoteId ? response.data : note)));
         toast.success('Note updated successfully!');
       } else {
         const response = await axios.post('/api/notes', formData, config);
-        setNotes([response.data, ...notes]);
+        setNotes((prevNotes) => [response.data, ...prevNotes]);
         toast.success('Note added successfully!');
       }
       
@@ -108,7 +108,9 @@ function Dashboard() {
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       await axios.delete(`/api/notes/${noteToDelete}`, config);
-      setNotes(notes.filter((note) => note._id !== noteToDelete));
+      
+      setNotes((prevNotes) => prevNotes.filter((note) => note._id !== noteToDelete));
+      
       toast.success('Note deleted!');
       setIsDeleteModalOpen(false);
       setNoteToDelete(null);
