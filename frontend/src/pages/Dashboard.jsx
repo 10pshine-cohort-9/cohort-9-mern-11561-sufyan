@@ -21,7 +21,7 @@ function Dashboard() {
 
     fetchNotes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, navigate]);
+  }, [user?.token, navigate]);
 
   // GET: Fetch all notes for the logged-in user
   const fetchNotes = async () => {
@@ -54,7 +54,7 @@ function Dashboard() {
       const response = await axios.post('/api/notes', formData, config);
       
       // Add the new note to the UI immediately
-      setNotes([response.data, ...notes]);
+      setNotes((prevNotes) => [response.data, ...prevNotes]);
       setFormData({ title: '', content: '' }); // Clear the form
       toast.success('Note added successfully!');
     } catch (error) {
@@ -72,7 +72,7 @@ function Dashboard() {
       await axios.delete(`/api/notes/${id}`, config);
       
       // Remove the deleted note from the UI
-      setNotes(notes.filter((note) => note._id !== id));
+      setNotes((prevNotes) => prevNotes.filter((note) => note._id !== id));
       toast.success('Note deleted!');
     } catch (error) {
       toast.error('Failed to delete note');
