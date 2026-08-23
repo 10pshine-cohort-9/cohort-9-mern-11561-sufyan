@@ -20,5 +20,8 @@ build/
 Thumbs.db
 
 # IDE
-**/.vscode/
+.vscode/
 .idea/
+
+# Uploads
+backend/uploads/
