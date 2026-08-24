@@ -4,6 +4,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
+import DOMPurify from 'dompurify'; // <-- Added DOMPurify
 
 // Import Context Hooks
 import { useAuth } from '../context/AuthContext';
@@ -232,14 +233,15 @@ function Dashboard() {
                       </div>
                     </div>
                     
+                    {/* Sanitized Title & Content Below! */}
                     <div 
                       className={`text-base font-extrabold tracking-tight leading-snug prose max-w-none ${isDarkMode ? 'text-amber-50 prose-invert' : 'text-slate-900'}`}
-                      dangerouslySetInnerHTML={{ __html: note.title }}
+                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(note.title) }}
                     />
                     
                     <div 
                       className={`text-sm prose max-w-none line-clamp-4 overflow-hidden opacity-90 ${isDarkMode ? 'text-amber-200/70 prose-invert' : 'text-slate-600'}`} 
-                      dangerouslySetInnerHTML={{ __html: note.content }} 
+                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(note.content) }} 
                     />
                   </div>
                 </div>
