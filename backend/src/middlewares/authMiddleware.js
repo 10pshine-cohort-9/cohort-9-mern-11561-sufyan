@@ -16,8 +16,7 @@ const protect = async (req, res, next) => {
 
       if (!user) {
         res.status(401);
-        const err = new Error("Not authorized, user no longer exists");
-        return next(err);
+        return next(new Error("Not authorized, user no longer exists"));
       }
       req.user = user;
       return next();
