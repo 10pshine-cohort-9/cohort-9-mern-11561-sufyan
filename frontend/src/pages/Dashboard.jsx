@@ -138,7 +138,7 @@ function Dashboard() {
       <div className="max-w-7xl mx-auto space-y-8">
         
         {/* Top Header & Interactive Actions Row */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-opacity-20 border-current">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-current/20">
           <div className="space-y-1">
             <div className="flex items-center gap-3">
               <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">My Workspace</h1>

@@ -38,12 +38,11 @@ function Profile() {
 
     setIsSavingName(true);
     try {
-      // Send the update to your backend database route
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       const response = await axios.put('/api/users/profile', { name: editedName }, config);
       
-      // Update global context with the fresh DB data
       login(response.data); 
+      setEditedName(response.data.name); // <--- Synchronized state here
       toast.success('Profile updated successfully in database!');
       setIsEditingName(false);
     } catch (error) {
