@@ -4,7 +4,7 @@ const noteSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Associates the note with a specific User document
+      ref: "User",
       required: true,
     },
     title: {
