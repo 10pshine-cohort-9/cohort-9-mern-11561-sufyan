@@ -16,19 +16,20 @@ const protect = async (req, res, next) => {
 
       if (!user) {
         res.status(401);
-        throw new Error("Not authorized, user no longer exists");
+        const err = new Error("Not authorized, user no longer exists");
+        return next(err);
       }
       req.user = user;
-      next();
+      return next();
     } catch (error) {
       res.status(401);
-      next(new Error("Not authorized, token failed or expired"));
+      return next(new Error("Not authorized, token failed or expired"));
     }
   }
 
   if (!token) {
     res.status(401);
-    next(new Error("Not authorized, no token provided"));
+    return next(new Error("Not authorized, no token provided"));
   }
 };
 

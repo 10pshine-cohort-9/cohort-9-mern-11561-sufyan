@@ -3,8 +3,8 @@ const express = require("express");
 const requestLogger = require("./middlewares/requestLogger");
 
 const errorHandler = require("./middlewares/errorHandler");
-
 const authRoutes = require("./routes/authRoutes");
+const noteRoutes = require("./routes/noteRoutes");
 
 const app = express();
 
@@ -19,6 +19,7 @@ app.get("/api/health", (req, res) => {
 });
 
 app.use("/api/users", authRoutes);
+app.use("/api/notes", noteRoutes);
 
 app.use(errorHandler);
 
