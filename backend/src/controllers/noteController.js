@@ -64,9 +64,12 @@ const updateNote = async (req, res, next) => {
       throw new Error("User not authorized to update this note");
     }
 
+    // Securely whitelist only title and content
+    const { title, content } = req.body;
+
     const updatedNote = await Note.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      { title, content },
       { new: true, runValidators: true }
     );
 
