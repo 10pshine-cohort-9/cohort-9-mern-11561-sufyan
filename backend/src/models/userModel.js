@@ -25,6 +25,11 @@ const userSchema = new mongoose.Schema(
       minlength: [6, "Password must be at least 6 characters"],
       select: false,
     },
+    // ADDED: Avatar field to store the Cloudinary image URL
+    avatar: {
+      type: String,
+      default: "", // Default to empty string so the frontend knows to show initials
+    },
   },
   {
     timestamps: true,

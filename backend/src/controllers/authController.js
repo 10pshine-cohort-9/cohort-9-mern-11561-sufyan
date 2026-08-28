@@ -26,6 +26,7 @@ const registerUser = async (req, res, next) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        avatar: user.avatar,
         token: generateToken(user._id),
       });
     } else {
@@ -52,6 +53,7 @@ const loginUser = async (req, res, next) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        avatar: user.avatar,
         token: generateToken(user._id),
       });
     } else {
@@ -63,7 +65,40 @@ const loginUser = async (req, res, next) => {
   }
 };
 
+// @desc    Update user profile (Name & Avatar)
+// @route   PUT /api/users/profile
+// @access  Private
+const updateProfile = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+      user.name = req.body.name || user.name;
+
+      if (req.file) {
+        user.avatar = `/uploads/${req.file.filename}`;
+      }
+
+      const updatedUser = await user.save();
+
+      res.json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        avatar: updatedUser.avatar,
+        token: generateToken(updatedUser._id),
+      });
+    } else {
+      res.status(404);
+      throw new Error("User not found");
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
+  updateProfile,
 };
