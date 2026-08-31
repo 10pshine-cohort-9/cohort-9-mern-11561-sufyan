@@ -1,9 +1,8 @@
+const fs = require("fs");
+const path = require("path");
 const User = require("../models/userModel");
 const generateToken = require("../utils/generateToken");
 
-// @desc    Register a new user
-// @route   POST /api/users/register
-// @access  Public
 const registerUser = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
@@ -34,18 +33,14 @@ const registerUser = async (req, res, next) => {
       throw new Error("Invalid user data");
     }
   } catch (error) {
-    next(error); // Passes errors to the global errorHandler
+    next(error);
   }
 };
 
-// @desc    Auth user & get token
-// @route   POST /api/users/login
-// @access  Public
 const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    // We explicitly select the password field because we set `select: false` in the schema
     const user = await User.findOne({ email }).select("+password");
 
     if (user && (await user.matchPassword(password))) {
@@ -65,9 +60,6 @@ const loginUser = async (req, res, next) => {
   }
 };
 
-// @desc    Update user profile (Name & Avatar)
-// @route   PUT /api/users/profile
-// @access  Private
 const updateProfile = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
@@ -76,6 +68,12 @@ const updateProfile = async (req, res, next) => {
       user.name = req.body.name || user.name;
 
       if (req.file) {
+        if (user.avatar && user.avatar.startsWith("/uploads/")) {
+          const oldPath = path.join(__dirname, "..", "..", user.avatar);
+          if (fs.existsSync(oldPath)) {
+            fs.unlinkSync(oldPath);
+          }
+        }
         user.avatar = `/uploads/${req.file.filename}`;
       }
 

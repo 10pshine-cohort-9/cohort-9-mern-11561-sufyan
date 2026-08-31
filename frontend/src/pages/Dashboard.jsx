@@ -4,7 +4,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
-import DOMPurify from 'dompurify'; // <-- Added DOMPurify
+import DOMPurify from 'dompurify';
 
 // Import Context Hooks
 import { useAuth } from '../context/AuthContext';
@@ -85,10 +85,12 @@ function Dashboard() {
       
       if (isEditing) {
         const response = await axios.put(`/api/notes/${editNoteId}`, formData, config);
+        // Update the edited note in the UI safely
         setNotes((prevNotes) => prevNotes.map((note) => (note._id === editNoteId ? response.data : note)));
         toast.success('Note updated successfully!');
       } else {
         const response = await axios.post('/api/notes', formData, config);
+        // Add the new note to the UI safely
         setNotes((prevNotes) => [response.data, ...prevNotes]);
         toast.success('Note added successfully!');
       }
@@ -110,6 +112,7 @@ function Dashboard() {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       await axios.delete(`/api/notes/${noteToDelete}`, config);
       
+      // Remove the deleted note from the UI safely
       setNotes((prevNotes) => prevNotes.filter((note) => note._id !== noteToDelete));
       
       toast.success('Note deleted!');
@@ -135,7 +138,7 @@ function Dashboard() {
       <div className="max-w-7xl mx-auto space-y-8">
         
         {/* Top Header & Interactive Actions Row */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-opacity-20 border-current">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-current/20">
           <div className="space-y-1">
             <div className="flex items-center gap-3">
               <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">My Workspace</h1>
