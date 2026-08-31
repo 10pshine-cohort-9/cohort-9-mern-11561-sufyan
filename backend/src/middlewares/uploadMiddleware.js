@@ -1,10 +1,9 @@
 const multer = require('multer');
 const path = require('path');
 
-// Configure local storage for uploaded profile images
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, 'uploads/'); // Saves files into a backend 'uploads' folder
+    cb(null, 'uploads/');
   },
   filename(req, file, cb) {
     cb(
@@ -14,7 +13,6 @@ const storage = multer.diskStorage({
   },
 });
 
-// Check file type to allow only images
 const checkFileType = (file, cb) => {
   const filetypes = /jpg|jpeg|png|webp/;
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
@@ -33,6 +31,12 @@ const upload = multer({
   fileFilter: function (req, file, cb) {
     checkFileType(file, cb);
   },
+  limits: {
+    fileSize: 5 * 1024 * 1024,
+    files: 1,
+    fields: 10,
+    parts: 20
+  }
 });
 
 module.exports = upload;
